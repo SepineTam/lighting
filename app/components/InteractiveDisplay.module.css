@@ -1,0 +1,91 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100vh;
+  background-color: black;
+  color: white;
+  padding: 20px;
+}
+
+.clock {
+  font-size: 2rem;
+  text-align: center;
+}
+
+.lightBeam {
+  position: relative;
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.lightBeam::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: 25%;
+  right: 25%;
+  bottom: 0;
+  background: radial-gradient(ellipse at center, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 70%);
+  pointer-events: none;
+}
+
+.displayArea {
+  z-index: 1;
+  text-align: center;
+}
+
+.englishText {
+  font-size: 2rem;
+  margin-bottom: 10px;
+}
+
+.chineseText {
+  font-size: 1.5rem;
+}
+
+.inputArea {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  padding: 20px 0;
+}
+
+.input {
+  flex-grow: 1;
+  max-width: 400px;
+  padding: 10px;
+  font-size: 1rem;
+  background-color: #333;
+  color: white;
+  border: none;
+  border-radius: 5px;
+}
+
+.button {
+  padding: 10px 20px;
+  font-size: 1rem;
+  background-color: #444;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.button:hover {
+  background-color: #555;
+}
+
+@media (max-width: 600px) {
+  .inputArea {
+    flex-direction: column;
+  }
+
+  .input {
+    max-width: 100%;
+  }
+}
