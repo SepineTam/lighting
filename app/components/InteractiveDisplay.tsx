@@ -5,12 +5,11 @@ import styles from './InteractiveDisplay.module.css';
 import config from '../config.json';
 import html2canvas from 'html2canvas';
 
-// 新增：闪烁警告组件
 const FlashWarning: React.FC<{ message: string; onClose: () => void }> = ({ message, onClose }) => {
   useEffect(() => {
     const timer = setTimeout(() => {
       onClose();
-    }, 2000); // 2秒后自动关闭
+    }, 2000);
 
     return () => clearTimeout(timer);
   }, [onClose]);
@@ -22,14 +21,28 @@ const FlashWarning: React.FC<{ message: string; onClose: () => void }> = ({ mess
   );
 };
 
-const InteractiveDisplay: React.FC = () => {
+interface InteractiveDisplayProps {
+  initialTheme: string;
+}
+
+const InteractiveDisplay: React.FC<InteractiveDisplayProps> = ({ initialTheme }) => {
   const [currentTime, setCurrentTime] = useState<string>('');
   const [inputTextEn, setInputTextEn] = useState<string>('');
   const [inputTextZh, setInputTextZh] = useState<string>('');
   const [texts, setTexts] = useState<Array<{ en: string; zh: string }>>(config.texts);
   const [displayText, setDisplayText] = useState<{ en: string; zh: string }>(config.texts[0]);
   const [textIndex, setTextIndex] = useState<number>(0);
-  const [warning, setWarning] = useState<string>(''); // 新增：警告状态
+  const [warning, setWarning] = useState<string>('');
+  const [themeConfig, setThemeConfig] = useState<any>(null);
+  const [currentTheme, setCurrentTheme] = useState<string>(initialTheme);
+
+  useEffect(() => {
+    const loadThemeConfig = async () => {
+      const themeConfig = await import(`../themes/${currentTheme}/config.json`);
+      setThemeConfig(themeConfig.default || themeConfig); // 添加 .default
+    };
+    loadThemeConfig();
+  }, [currentTheme]);
 
   useEffect(() => {
     const updateClock = () => {
@@ -40,7 +53,6 @@ const InteractiveDisplay: React.FC = () => {
     updateClock();
     const intervalId = setInterval(updateClock, 1000);
 
-    // 从localStorage加载保存的文本
     const savedTexts = localStorage.getItem('savedTexts');
     if (savedTexts) {
       setTexts(JSON.parse(savedTexts));
@@ -55,7 +67,7 @@ const InteractiveDisplay: React.FC = () => {
       return;
     }
     
-    setWarning(''); // 清除警告
+    setWarning('');
     const newText = { en: inputTextEn.trim(), zh: inputTextZh.trim() };
     const updatedTexts = [...texts, newText];
     setTexts(updatedTexts);
@@ -63,7 +75,6 @@ const InteractiveDisplay: React.FC = () => {
     setInputTextEn('');
     setInputTextZh('');
 
-    // 保存到localStorage
     localStorage.setItem('savedTexts', JSON.stringify(updatedTexts));
   };
 
@@ -78,7 +89,7 @@ const InteractiveDisplay: React.FC = () => {
   const handleDownload = async () => {
     if (displayRef.current) {
       const canvas = await html2canvas(displayRef.current, {
-        backgroundColor: 'black' as any,
+        background: themeConfig?.backgroundColor || 'black',
         logging: true,
         ignoreElements: (element) => element.classList.contains(styles.inputArea)
       });
@@ -91,22 +102,40 @@ const InteractiveDisplay: React.FC = () => {
     }
   };
 
+  const handleThemeChange = (newTheme: string) => {
+    setCurrentTheme(newTheme);
+  };
+
+  if (!themeConfig) {
+    return <div>Loading theme...</div>;
+  }
+
   return (
     <div className={styles.container}>
       {warning && <FlashWarning message={warning} onClose={() => setWarning('')} />}
       <div className={styles.displayContainer} ref={displayRef}>
-        <div className={styles.background}>
-          <div className={styles.lightBeam}></div>
+        <div className={styles.background} style={{ backgroundColor: themeConfig.backgroundColor }}>
+          {currentTheme === 'Halo' && themeConfig.haloEffect && (
+            <div 
+              className={styles.haloEffect} 
+              style={{
+                background: `radial-gradient(circle at calc(50% + ${themeConfig.haloEffect.position.x}px) calc(50% + ${themeConfig.haloEffect.position.y}px), 
+                            ${themeConfig.haloEffect.color} 0%, 
+                            rgba(0,0,0,0) ${themeConfig.haloEffect.size})`,
+                opacity: themeConfig.haloEffect.intensity,
+                filter: `blur(${themeConfig.haloEffect.blur})`,
+              }}
+            />
+          )}
         </div>
         <div className={styles.content}>
-          <div className={styles.clock} style={{
-            fontFamily: config.clock.fontFamily,
-            fontSize: config.clock.fontSize
-          }}>{currentTime}</div>
+          <div className={styles.clock} style={themeConfig.clockStyle}>
+            {currentTime}
+          </div>
           <div className={styles.textLayer}>
             <div className={styles.displayArea}>
-              <p className={styles.englishText}>{displayText.en}</p>
-              <p className={styles.chineseText}>{displayText.zh}</p>
+              <p className={styles.englishText} style={themeConfig.textStyle}>{displayText.en}</p>
+              <p className={styles.chineseText} style={themeConfig.textStyle}>{displayText.zh}</p>
             </div>
           </div>
         </div>
@@ -133,6 +162,19 @@ const InteractiveDisplay: React.FC = () => {
           <button onClick={handleNextText} className={styles.button}>下一条</button>
         </div>
         <button onClick={handleDownload} className={`${styles.button} ${styles.downloadButton}`}>下载图片</button>
+        <div className={styles.themeSelector}>
+          <select
+            value={currentTheme}
+            onChange={(e) => handleThemeChange(e.target.value)}
+            className={styles.themeSelect}
+          >
+            {config.themes.map((theme) => (
+              <option key={theme} value={theme}>
+                {theme}
+              </option>
+            ))}
+          </select>
+        </div>
       </div>
     </div>
   );

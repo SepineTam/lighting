@@ -1,0 +1,23 @@
+{
+  "clockStyle": {
+    "fontFamily": "'Digital-7', sans-serif",
+    "fontSize": "48px",
+    "color": "#ffffff"
+  },
+  "textStyle": {
+    "fontFamily": "Arial, sans-serif",
+    "fontSize": "24px",
+    "color": "#ffffff"
+  },
+  "backgroundColor": "#000000",
+  "haloEffect": {
+    "color": "rgba(255, 255, 255, 0.3)",
+    "size": "70%",
+    "position": {
+      "x": 0,
+      "y": 0
+    },
+    "intensity": 0.8,
+    "blur": "30px"
+  }
+}

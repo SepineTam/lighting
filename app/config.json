@@ -1,20 +1,10 @@
 {
+  "themes": ["Halo", "Cyberpunk"],
+  "currentTheme": "Halo",
   "texts": [
     {
-      "en": "now or never.",
-      "zh": "机不可失，时不再来。"
-    },
-    {
-      "en": "seize the day.",
-      "zh": "把握当下。"
-    },
-    {
-      "en": "time is money.",
-      "zh": "时间就是金钱。"
+      "en": "Welcome to the interactive display",
+      "zh": "欢迎使用交互式显示"
     }
-  ],
-  "clock": {
-    "fontFamily": "'Digital-7', monospace",
-    "fontSize": "4rem"
-  }
+  ]
 }

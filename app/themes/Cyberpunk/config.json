@@ -1,0 +1,14 @@
+{
+  "clockStyle": {
+    "fontFamily": "'Orbitron', sans-serif",
+    "fontSize": "54px",
+    "color": "#00ffff"
+  },
+  "textStyle": {
+    "fontFamily": "'Roboto', sans-serif",
+    "fontSize": "28px",
+    "color": "#ff00ff"
+  },
+  "backgroundColor": "#0a0a2a",
+  "lightBeamColor": "rgba(255, 0, 255, 0.2)"
+}
