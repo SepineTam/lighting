@@ -117,14 +117,14 @@ const InteractiveDisplay: React.FC = () => {
             type="text"
             value={inputTextEn}
             onChange={(e) => setInputTextEn(e.target.value)}
-            placeholder="输入英文文本"
+            placeholder="输入第一行文本"
             className={styles.input}
           />
           <input
             type="text"
             value={inputTextZh}
             onChange={(e) => setInputTextZh(e.target.value)}
-            placeholder="输入中文文本"
+            placeholder="输入第二行文本"
             className={styles.input}
           />
         </div>
