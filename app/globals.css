@@ -24,3 +24,24 @@ body {
 .animate-pulse {
   animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
+
+@font-face {
+  font-family: 'CustomMidAutumnFont';
+  src: url('/fonts/YunFengFeiYunTi.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'YunFengFeiYunTi';
+  src: url('/fonts/YunFengFeiYunTi.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+/* 保留其他现有的 CSS 规则 */
+
+.mid-autumn-theme {
+  font-family: var(--font-family-chinese), var(--font-family-english);
+}

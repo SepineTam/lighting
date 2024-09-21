@@ -40,14 +40,23 @@
 }
 
 .textLayer {
-  flex-grow: 1;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
 .displayArea {
-  text-align: center;
+  /* 增加高度以适应更大的文本 */
+  height: 200px; /* 根据需要调整这个值 */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .englishText {
@@ -167,3 +176,9 @@
 }
 
 /* ... 其他样式保持不变 ... */
+
+.englishText, .chineseText {
+  margin: 0;
+  text-align: center;
+  /* 可以在这里添加其他样式 */
+}

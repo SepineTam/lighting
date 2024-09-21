@@ -5,6 +5,7 @@ import styles from './InteractiveDisplay.module.css';
 import config from '../config.json';
 import html2canvas from 'html2canvas';
 import Image from 'next/image';
+import midAutumnConfig from '../themes/Mid-Autumn/config.json';
 
 // 如果您需要使用 Options 类型，可以这样声明：
 type Html2CanvasOptions = Parameters<typeof html2canvas>[1];
@@ -43,7 +44,7 @@ const InteractiveDisplay: React.FC<InteractiveDisplayProps> = ({ initialTheme })
   useEffect(() => {
     const loadThemeConfig = async () => {
       const themeConfig = await import(`../themes/${currentTheme}/config.json`);
-      setThemeConfig(themeConfig.default || themeConfig); // 添加 .default
+      setThemeConfig(themeConfig.default || themeConfig);
     };
     loadThemeConfig();
   }, [currentTheme]);
@@ -114,6 +115,14 @@ const InteractiveDisplay: React.FC<InteractiveDisplayProps> = ({ initialTheme })
     return <div>Loading theme...</div>;
   }
 
+  const theme = midAutumnConfig;
+
+  const getFontFamily = (text: string) => {
+    return /^[\u4e00-\u9fa5]+$/.test(text) ? 
+      theme.fontFamily.chinese : 
+      theme.fontFamily.english;
+  };
+
   return (
     <div className={styles.container}>
       {warning && <FlashWarning message={warning} onClose={() => setWarning('')} />}
@@ -177,10 +186,33 @@ const InteractiveDisplay: React.FC<InteractiveDisplayProps> = ({ initialTheme })
               }}
             />
           )}
+          {currentTheme === 'Mid-Autumn' && themeConfig.midAutumnEffect && themeConfig.midAutumnEffect.enabled && (
+            <div 
+              className={styles.midAutumnEffect}
+              style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                backgroundImage: `url(${themeConfig.midAutumnEffect.lanternImage})`,
+                backgroundRepeat: 'no-repeat',
+                backgroundPosition: 'right bottom',
+                opacity: themeConfig.midAutumnEffect.lanternOpacity,
+                zIndex: 1,
+              }}
+            />
+          )}
         </div>
         <div className={styles.content}>
           <div className={styles.clockContainer}>
-            <div className={styles.clock} style={themeConfig.clockStyle}>
+            <div 
+              className={styles.clock} 
+              style={{
+                ...themeConfig.clockStyle,
+                marginTop: currentTheme === 'Mid-Autumn' ? themeConfig.clockStyle.marginTop : undefined
+              }}
+            >
               {currentTime}
             </div>
             {currentTheme === 'Porsche' && themeConfig.underlineStyle && (
@@ -200,13 +232,22 @@ const InteractiveDisplay: React.FC<InteractiveDisplayProps> = ({ initialTheme })
             <div className={styles.displayArea}>
               <p 
                 className={styles.englishText} 
-                style={currentTheme === 'Porsche' ? themeConfig.englishTextStyle : themeConfig.textStyle}
+                style={{
+                  ...themeConfig.englishTextStyle,
+                  fontFamily: getFontFamily(displayText.en),
+                  fontSize: '40px', // 增加英文文本的字体大小
+                  marginBottom: '20px' // 增加英文和中文文本之间的间距
+                }}
               >
                 {displayText.en}
               </p>
               <p 
                 className={styles.chineseText} 
-                style={currentTheme === 'Porsche' ? themeConfig.chineseTextStyle : {...themeConfig.textStyle, fontFamily: "'SimSun', serif"}}
+                style={{
+                  ...themeConfig.textStyle,
+                  fontFamily: getFontFamily(displayText.zh),
+                  fontSize: '40px' // 增加中文文本的字体大小
+                }}
               >
                 {displayText.zh}
               </p>

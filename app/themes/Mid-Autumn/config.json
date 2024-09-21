@@ -1,0 +1,29 @@
+{
+  "backgroundColor": "#fbda41",
+  "clockStyle": {
+    "color": "#8B4513",
+    "fontSize": "64px",
+    "fontWeight": "bold",
+    "fontFamily": "'Heiti SC', 'Microsoft YaHei', sans-serif",
+    "marginTop": "60px"
+  },
+  "textStyle": {
+    "color": "#8B4513",
+    "fontSize": "32px",
+    "fontFamily": "'CustomMidAutumnFont', 'LiSu', '隶书', 'STLiti', 'SimLi', sans-serif"
+  },
+  "englishTextStyle": {
+    "color": "#8B4513",
+    "fontSize": "32px",
+    "fontFamily": "'Times New Roman', serif"
+  },
+  "midAutumnEffect": {
+    "enabled": true,
+    "lanternImage": "/images/lantern.png",
+    "lanternOpacity": 0.2
+  },
+  "fontFamily": {
+    "english": "Times New Roman, serif",
+    "chinese": "YunFengFeiYunTi, serif"
+  }
+}
