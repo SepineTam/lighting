@@ -4,10 +4,28 @@
     "fontSize": "54px",
     "color": "#00ffff"
   },
+  "timeStyle": {
+    "fontSize": "6xl",
+    "fontWeight": "bold",
+    "color": "#00ffff",
+    "animation": "pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite"
+  },
   "textStyle": {
-    "fontFamily": "'Roboto', sans-serif",
-    "fontSize": "28px",
-    "color": "#ff00ff"
+    "fontSize": "2xl",
+    "color": "#ff00ff",
+    "animation": "pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite"
+  },
+  "englishTextStyle": {
+    "fontFamily": "'Times New Roman', serif",
+    "fontSize": "2xl",
+    "color": "#ff00ff",
+    "animation": "pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite"
+  },
+  "chineseTextStyle": {
+    "fontFamily": "'SimSun', serif",
+    "fontSize": "2xl",
+    "color": "#ff00ff",
+    "animation": "pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite"
   },
   "backgroundColor": "#0a0a2a",
   "lightBeamColor": "rgba(255, 0, 255, 0.2)"

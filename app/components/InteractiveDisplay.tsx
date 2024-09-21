@@ -172,8 +172,18 @@ const InteractiveDisplay: React.FC<InteractiveDisplayProps> = ({ initialTheme })
           )}
           <div className={styles.textLayer}>
             <div className={styles.displayArea}>
-              <p className={styles.englishText} style={themeConfig.textStyle}>{displayText.en}</p>
-              <p className={styles.chineseText} style={{...themeConfig.textStyle, fontFamily: "'SimSun', serif"}}>{displayText.zh}</p>
+              <p 
+                className={styles.englishText} 
+                style={currentTheme === 'Cyberpunk' ? themeConfig.englishTextStyle : themeConfig.textStyle}
+              >
+                {displayText.en}
+              </p>
+              <p 
+                className={styles.chineseText} 
+                style={currentTheme === 'Cyberpunk' ? themeConfig.chineseTextStyle : {...themeConfig.textStyle, fontFamily: "'SimSun', serif"}}
+              >
+                {displayText.zh}
+              </p>
             </div>
           </div>
         </div>
@@ -218,9 +228,7 @@ const InteractiveDisplay: React.FC<InteractiveDisplayProps> = ({ initialTheme })
   );
 };
 
-export default InteractiveDisplay;
-
-// 添加这个新的组件来显示时钟图标
+export default InteractiveDisplay;// 添加这个新的组件来显示时钟图标
 const ClockIcon: React.FC<{ time: string }> = ({ time }) => {
   const [hours, minutes] = time.split(':').map(Number);
   const hourDegrees = (hours % 12 + minutes / 60) * 30;
@@ -234,3 +242,4 @@ const ClockIcon: React.FC<{ time: string }> = ({ time }) => {
     </svg>
   );
 };
+
