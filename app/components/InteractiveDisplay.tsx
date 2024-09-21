@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import styles from './InteractiveDisplay.module.css';
 import config from '../config.json';
-import html2canvas from 'html2canvas';
+import html2canvas, { Options as Html2CanvasOptions } from 'html2canvas';
 
 const FlashWarning: React.FC<{ message: string; onClose: () => void }> = ({ message, onClose }) => {
   useEffect(() => {
@@ -89,10 +89,10 @@ const InteractiveDisplay: React.FC<InteractiveDisplayProps> = ({ initialTheme })
   const handleDownload = async () => {
     if (displayRef.current) {
       const canvas = await html2canvas(displayRef.current, {
-        background: themeConfig?.backgroundColor || 'black',
+        backgroundColor: themeConfig?.backgroundColor || 'black',
         logging: true,
         ignoreElements: (element) => element.classList.contains(styles.inputArea)
-      });
+      } as Html2CanvasOptions);
 
       const image = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
       const link = document.createElement('a');
@@ -127,15 +127,53 @@ const InteractiveDisplay: React.FC<InteractiveDisplayProps> = ({ initialTheme })
               }}
             />
           )}
+          {currentTheme === 'Lighton' && themeConfig.lightEffect && (
+            <>
+              <div 
+                className={styles.lightBar} 
+                style={{
+                  position: 'absolute',
+                  top: `calc(50% + ${themeConfig.lightEffect.position.y}px)`,
+                  left: `calc(50% - ${parseInt(themeConfig.lightEffect.width) / 2}px)`,
+                  width: themeConfig.lightEffect.width,
+                  height: themeConfig.lightEffect.height,
+                  backgroundColor: themeConfig.lightEffect.color,
+                  boxShadow: `0 0 ${themeConfig.lightEffect.blur} ${themeConfig.lightEffect.color}`,
+                  opacity: themeConfig.lightEffect.intensity,
+                  zIndex: 2,
+                }}
+              />
+              <div 
+                className={styles.lightBeam} 
+                style={{
+                  position: 'absolute',
+                  top: `calc(50% + ${themeConfig.lightEffect.position.y}px + ${themeConfig.lightEffect.height})`,
+                  left: `calc(50% - ${parseInt(themeConfig.lightEffect.width) / 2}px)`,
+                  width: themeConfig.lightEffect.width,
+                  height: themeConfig.lightEffect.beamLength,
+                  background: `linear-gradient(to bottom, ${themeConfig.lightEffect.color}, transparent)`,
+                  opacity: themeConfig.lightEffect.intensity * 0.5,
+                  clipPath: `polygon(0 0, 100% 0, ${100 + themeConfig.lightEffect.beamSpread / 2}% 100%, ${-themeConfig.lightEffect.beamSpread / 2}% 100%)`,
+                  zIndex: 2,
+                }}
+              />
+            </>
+          )}
         </div>
         <div className={styles.content}>
-          <div className={styles.clock} style={themeConfig.clockStyle}>
-            {currentTime}
-          </div>
+          {currentTheme === 'Lighton' ? (
+            <div className={styles.clock} style={themeConfig.clockStyle}>
+              <ClockIcon time={currentTime} />
+            </div>
+          ) : (
+            <div className={styles.clock} style={themeConfig.clockStyle}>
+              {currentTime}
+            </div>
+          )}
           <div className={styles.textLayer}>
             <div className={styles.displayArea}>
               <p className={styles.englishText} style={themeConfig.textStyle}>{displayText.en}</p>
-              <p className={styles.chineseText} style={themeConfig.textStyle}>{displayText.zh}</p>
+              <p className={styles.chineseText} style={{...themeConfig.textStyle, fontFamily: "'SimSun', serif"}}>{displayText.zh}</p>
             </div>
           </div>
         </div>
@@ -181,3 +219,18 @@ const InteractiveDisplay: React.FC<InteractiveDisplayProps> = ({ initialTheme })
 };
 
 export default InteractiveDisplay;
+
+// 添加这个新的组件来显示时钟图标
+const ClockIcon: React.FC<{ time: string }> = ({ time }) => {
+  const [hours, minutes] = time.split(':').map(Number);
+  const hourDegrees = (hours % 12 + minutes / 60) * 30;
+  const minuteDegrees = minutes * 6;
+
+  return (
+    <svg width="48" height="48" viewBox="0 0 48 48">
+      <circle cx="24" cy="24" r="23" stroke="white" strokeWidth="2" fill="none" />
+      <line x1="24" y1="24" x2="24" y2="12" stroke="white" strokeWidth="2" transform={`rotate(${hourDegrees} 24 24)`} />
+      <line x1="24" y1="24" x2="24" y2="8" stroke="white" strokeWidth="1" transform={`rotate(${minuteDegrees} 24 24)`} />
+    </svg>
+  );
+};

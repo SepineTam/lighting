@@ -145,3 +145,25 @@
 }
 
 /* ... 其他样式保持不变 ... */
+
+.lightEffect {
+  position: absolute;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* ... 其他样式保持不变 ... */
+
+.lightBar, .lightBeam, .lightBeamLeft, .lightBeamRight {
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* ... 其他样式保持不变 ... */
+
+.lightBar, .lightBeam {
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* ... 其他样式保持不变 ... */

@@ -1,0 +1,26 @@
+{
+  "clockStyle": {
+    "fontFamily": "'Times New Roman', serif",
+    "fontSize": "48px",
+    "color": "#ffffff"
+  },
+  "textStyle": {
+    "fontFamily": "'Times New Roman', 'SimSun', serif",
+    "fontSize": "24px",
+    "color": "#ffffff"
+  },
+  "backgroundColor": "#000000",
+  "lightEffect": {
+    "color": "rgba(255, 255, 255, 0.7)",
+    "width": "300px",
+    "height": "5px",
+    "position": {
+      "x": 0,
+      "y": -100
+    },
+    "intensity": 1,
+    "blur": "10px",
+    "beamLength": "300px",
+    "beamSpread": 150
+  }
+}
