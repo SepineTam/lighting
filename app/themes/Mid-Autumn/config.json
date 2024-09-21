@@ -10,12 +10,14 @@
   "textStyle": {
     "color": "#8B4513",
     "fontSize": "32px",
-    "fontFamily": "'CustomMidAutumnFont', 'LiSu', '隶书', 'STLiti', 'SimLi', sans-serif"
+    "fontFamily": "'CustomMidAutumnFont', 'LiSu', '隶书', 'STLiti', 'SimLi', sans-serif",
+    "lineHeight": "60px"
   },
   "englishTextStyle": {
     "color": "#8B4513",
     "fontSize": "32px",
-    "fontFamily": "'Times New Roman', serif"
+    "fontFamily": "'Times New Roman', serif",
+    "lineHeight": "60px"
   },
   "midAutumnEffect": {
     "enabled": true,

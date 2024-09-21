@@ -234,9 +234,7 @@ const InteractiveDisplay: React.FC<InteractiveDisplayProps> = ({ initialTheme })
                 className={styles.englishText} 
                 style={{
                   ...themeConfig.englishTextStyle,
-                  fontFamily: getFontFamily(displayText.en),
-                  fontSize: '40px', // 增加英文文本的字体大小
-                  marginBottom: '20px' // 增加英文和中文文本之间的间距
+                  fontFamily: getFontFamily(displayText.en)
                 }}
               >
                 {displayText.en}
@@ -245,8 +243,7 @@ const InteractiveDisplay: React.FC<InteractiveDisplayProps> = ({ initialTheme })
                 className={styles.chineseText} 
                 style={{
                   ...themeConfig.textStyle,
-                  fontFamily: getFontFamily(displayText.zh),
-                  fontSize: '40px' // 增加中文文本的字体大小
+                  fontFamily: getFontFamily(displayText.zh)
                 }}
               >
                 {displayText.zh}
