@@ -1,6 +1,6 @@
 {
-  "themes": ["Halo", "Cyberpunk", "Lighton"],
-  "currentTheme": "Cyberpunk",
+  "themes": ["Halo", "Cyberpunk", "Lighton", "Porsche"],
+  "currentTheme": "Porsche",
   "texts": [
     {
       "en": "Welcome to the interactive display",

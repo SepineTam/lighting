@@ -1,0 +1,41 @@
+{
+  "backgroundColor": "#000000",
+  "clockStyle": {
+    "color": "#93acbd",
+    "fontSize": "64px",
+    "fontWeight": "300",
+    "fontFamily": "'Porsche Next', 'Arial', sans-serif"
+  },
+  "underlineStyle": {
+    "color": "#93acbd",
+    "height": "2px",
+    "widthMultiplier": 1.5
+  },
+  "textStyle": {
+    "color": "#D5001C",
+    "fontSize": "28px",
+    "fontWeight": "300",
+    "fontFamily": "'Porsche Next', 'Arial', sans-serif"
+  },
+  "englishTextStyle": {
+    "color": "#D5001C",
+    "fontSize": "32px",
+    "fontWeight": "300",
+    "fontFamily": "'Porsche Next', 'Arial', sans-serif",
+    "textTransform": "uppercase",
+    "letterSpacing": "2px"
+  },
+  "chineseTextStyle": {
+    "color": "#D5001C",
+    "fontSize": "28px",
+    "fontWeight": "300",
+    "fontFamily": "'SimHei', sans-serif"
+  },
+  "accentColor": "#C6C6C6",
+  "porscheEffect": {
+    "enabled": true,
+    "stripeColor": "#D5001C",
+    "stripeWidth": "4px",
+    "stripePosition": "top"
+  }
+}

@@ -4,6 +4,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import styles from './InteractiveDisplay.module.css';
 import config from '../config.json';
 import html2canvas from 'html2canvas';
+import Image from 'next/image';
 
 // 如果您需要使用 Options 类型，可以这样声明：
 type Html2CanvasOptions = Parameters<typeof html2canvas>[1];
@@ -162,28 +163,50 @@ const InteractiveDisplay: React.FC<InteractiveDisplayProps> = ({ initialTheme })
               />
             </>
           )}
+          {currentTheme === 'Porsche' && themeConfig.porscheEffect && themeConfig.porscheEffect.enabled && (
+            <div 
+              className={styles.porscheStripe}
+              style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                right: 0,
+                height: themeConfig.porscheEffect.stripeWidth,
+                backgroundColor: themeConfig.porscheEffect.stripeColor,
+                zIndex: 2,
+              }}
+            />
+          )}
         </div>
         <div className={styles.content}>
-          {currentTheme === 'Lighton' ? (
-            <div className={styles.clock} style={themeConfig.clockStyle}>
-              <ClockIcon time={currentTime} />
-            </div>
-          ) : (
+          <div className={styles.clockContainer}>
             <div className={styles.clock} style={themeConfig.clockStyle}>
               {currentTime}
             </div>
-          )}
+            {currentTheme === 'Porsche' && themeConfig.underlineStyle && (
+              <div 
+                className={styles.underline}
+                style={{
+                  backgroundColor: themeConfig.underlineStyle.color,
+                  height: themeConfig.underlineStyle.height,
+                  width: `calc(${themeConfig.clockStyle.fontSize} * ${themeConfig.underlineStyle.widthMultiplier} * 5)`, // 5 是时间字符的大致数量
+                  margin: '0 auto',
+                  marginTop: '10px' // 调整此值以改变线条与时间的距离
+                }}
+              />
+            )}
+          </div>
           <div className={styles.textLayer}>
             <div className={styles.displayArea}>
               <p 
                 className={styles.englishText} 
-                style={currentTheme === 'Cyberpunk' ? themeConfig.englishTextStyle : themeConfig.textStyle}
+                style={currentTheme === 'Porsche' ? themeConfig.englishTextStyle : themeConfig.textStyle}
               >
                 {displayText.en}
               </p>
               <p 
                 className={styles.chineseText} 
-                style={currentTheme === 'Cyberpunk' ? themeConfig.chineseTextStyle : {...themeConfig.textStyle, fontFamily: "'SimSun', serif"}}
+                style={currentTheme === 'Porsche' ? themeConfig.chineseTextStyle : {...themeConfig.textStyle, fontFamily: "'SimSun', serif"}}
               >
                 {displayText.zh}
               </p>
