@@ -3,7 +3,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import styles from './InteractiveDisplay.module.css';
 import config from '../config.json';
-import html2canvas, { Options as Html2CanvasOptions } from 'html2canvas';
+import html2canvas from 'html2canvas';
+
+// 如果您需要使用 Options 类型，可以这样声明：
+type Html2CanvasOptions = Parameters<typeof html2canvas>[1];
 
 const FlashWarning: React.FC<{ message: string; onClose: () => void }> = ({ message, onClose }) => {
   useEffect(() => {
