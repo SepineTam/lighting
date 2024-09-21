@@ -1,8 +1,26 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import styles from './InteractiveDisplay.module.css';
 import config from '../config.json';
+import html2canvas from 'html2canvas';
+
+// 新增：闪烁警告组件
+const FlashWarning: React.FC<{ message: string; onClose: () => void }> = ({ message, onClose }) => {
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      onClose();
+    }, 2000); // 2秒后自动关闭
+
+    return () => clearTimeout(timer);
+  }, [onClose]);
+
+  return (
+    <div className={styles.flashWarning}>
+      {message}
+    </div>
+  );
+};
 
 const InteractiveDisplay: React.FC = () => {
   const [currentTime, setCurrentTime] = useState<string>('');
@@ -11,6 +29,7 @@ const InteractiveDisplay: React.FC = () => {
   const [texts, setTexts] = useState<Array<{ en: string; zh: string }>>(config.texts);
   const [displayText, setDisplayText] = useState<{ en: string; zh: string }>(config.texts[0]);
   const [textIndex, setTextIndex] = useState<number>(0);
+  const [warning, setWarning] = useState<string>(''); // 新增：警告状态
 
   useEffect(() => {
     const updateClock = () => {
@@ -31,17 +50,21 @@ const InteractiveDisplay: React.FC = () => {
   }, []);
 
   const handleSubmit = () => {
-    const newText = { en: inputTextEn.trim(), zh: inputTextZh.trim() };
-    if (newText.en && newText.zh) {
-      const updatedTexts = [...texts, newText];
-      setTexts(updatedTexts);
-      setDisplayText(newText);
-      setInputTextEn('');
-      setInputTextZh('');
-
-      // 保存到localStorage
-      localStorage.setItem('savedTexts', JSON.stringify(updatedTexts));
+    if (!inputTextEn || !inputTextZh) {
+      setWarning('请同时输入英文和中文文本');
+      return;
     }
+    
+    setWarning(''); // 清除警告
+    const newText = { en: inputTextEn.trim(), zh: inputTextZh.trim() };
+    const updatedTexts = [...texts, newText];
+    setTexts(updatedTexts);
+    setDisplayText(newText);
+    setInputTextEn('');
+    setInputTextZh('');
+
+    // 保存到localStorage
+    localStorage.setItem('savedTexts', JSON.stringify(updatedTexts));
   };
 
   const handleNextText = () => {
@@ -50,33 +73,66 @@ const InteractiveDisplay: React.FC = () => {
     setDisplayText(texts[nextIndex]);
   };
 
+  const displayRef = useRef<HTMLDivElement>(null);
+
+  const handleDownload = async () => {
+    if (displayRef.current) {
+      const canvas = await html2canvas(displayRef.current, {
+        backgroundColor: 'black' as any,
+        logging: true,
+        ignoreElements: (element) => element.classList.contains(styles.inputArea)
+      });
+
+      const image = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
+      const link = document.createElement('a');
+      link.download = 'interactive-display.png';
+      link.href = image;
+      link.click();
+    }
+  };
+
   return (
     <div className={styles.container}>
-      <div className={styles.clock}>{currentTime}</div>
-      <div className={styles.lightBeam}>
-        <div className={styles.displayArea}>
-          <p className={styles.englishText}>{displayText.en}</p>
-          <p className={styles.chineseText}>{displayText.zh}</p>
+      {warning && <FlashWarning message={warning} onClose={() => setWarning('')} />}
+      <div className={styles.displayContainer} ref={displayRef}>
+        <div className={styles.background}>
+          <div className={styles.lightBeam}></div>
+        </div>
+        <div className={styles.content}>
+          <div className={styles.clock} style={{
+            fontFamily: config.clock.fontFamily,
+            fontSize: config.clock.fontSize
+          }}>{currentTime}</div>
+          <div className={styles.textLayer}>
+            <div className={styles.displayArea}>
+              <p className={styles.englishText}>{displayText.en}</p>
+              <p className={styles.chineseText}>{displayText.zh}</p>
+            </div>
+          </div>
         </div>
       </div>
       <div className={styles.inputArea}>
-        <input
-          type="text"
-          value={inputTextEn}
-          onChange={(e) => setInputTextEn(e.target.value)}
-          placeholder="输入英文文本"
-          className={styles.input}
-        />
-        <input
-          type="text"
-          value={inputTextZh}
-          onChange={(e) => setInputTextZh(e.target.value)}
-          placeholder="输入中文文本"
-          className={styles.input}
-        />
-        <button onClick={handleSubmit} className={styles.button}>提交</button>
-        <button onClick={handleNextText} className={styles.button}>下一条</button>
-        <button className={styles.button}>下载图片</button>
+        <div className={styles.inputColumn}>
+          <input
+            type="text"
+            value={inputTextEn}
+            onChange={(e) => setInputTextEn(e.target.value)}
+            placeholder="输入英文文本"
+            className={styles.input}
+          />
+          <input
+            type="text"
+            value={inputTextZh}
+            onChange={(e) => setInputTextZh(e.target.value)}
+            placeholder="输入中文文本"
+            className={styles.input}
+          />
+        </div>
+        <div className={styles.buttonColumn}>
+          <button onClick={handleSubmit} className={styles.button}>提交</button>
+          <button onClick={handleNextText} className={styles.button}>下一条</button>
+        </div>
+        <button onClick={handleDownload} className={`${styles.button} ${styles.downloadButton}`}>下载图片</button>
       </div>
     </div>
   );

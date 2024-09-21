@@ -12,5 +12,9 @@
       "en": "time is money.",
       "zh": "时间就是金钱。"
     }
-  ]
+  ],
+  "clock": {
+    "fontFamily": "'Digital-7', monospace",
+    "fontSize": "4rem"
+  }
 }

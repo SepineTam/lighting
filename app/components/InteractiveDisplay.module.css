@@ -6,45 +6,72 @@
   background-color: black;
   color: white;
   padding: 20px;
+  position: relative;
+  overflow: hidden;
 }
 
-.clock {
-  font-size: 2rem;
-  text-align: center;
+.displayContainer {
+  position: relative;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1;
 }
 
 .lightBeam {
+  position: absolute;
+  top: -20%;
+  left: -50%;
+  right: -50%;
+  bottom: -50%;
+  background: radial-gradient(
+    ellipse at center 33%,
+    rgba(255,255,255,0.3) 0%,
+    rgba(255,255,255,0.1) 25%,
+    rgba(255,255,255,0) 70%
+  );
+  pointer-events: none;
+}
+
+.content {
   position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.clock {
+  text-align: center;
+  padding-top: 40px;
+}
+
+.textLayer {
   flex-grow: 1;
   display: flex;
   justify-content: center;
   align-items: center;
-  overflow: hidden;
-}
-
-.lightBeam::before {
-  content: '';
-  position: absolute;
-  top: -50%;
-  left: 25%;
-  right: 25%;
-  bottom: 0;
-  background: radial-gradient(ellipse at center, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 70%);
-  pointer-events: none;
 }
 
 .displayArea {
-  z-index: 1;
   text-align: center;
 }
 
 .englishText {
-  font-size: 2rem;
+  font-size: 2.5rem;
   margin-bottom: 10px;
 }
 
 .chineseText {
-  font-size: 1.5rem;
+  font-size: 2rem;
 }
 
 .inputArea {
@@ -54,24 +81,31 @@
   padding: 20px 0;
 }
 
-.input {
-  flex-grow: 1;
-  max-width: 400px;
-  padding: 10px;
+.inputColumn, .buttonColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.input, .button {
+  height: 50px;
+  padding: 0 10px;
   font-size: 1rem;
   background-color: #333;
   color: white;
   border: none;
   border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.input {
+  width: 200px;
 }
 
 .button {
-  padding: 10px 20px;
-  font-size: 1rem;
   background-color: #444;
-  color: white;
-  border: none;
-  border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s;
 }
@@ -80,12 +114,37 @@
   background-color: #555;
 }
 
-@media (max-width: 600px) {
-  .inputArea {
-    flex-direction: column;
-  }
-
-  .input {
-    max-width: 100%;
-  }
+.downloadButton {
+  height: 110px;
 }
+
+/* ... 保持其他样式不变 */
+
+.warning {
+  color: #ff4d4f;
+  font-size: 0.9rem;
+  margin-top: 5px;
+  text-align: center;
+}
+
+/* ... 保持其他样式不变 */
+
+.flashWarning {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #ff4d4f;
+  font-size: 1.5rem;
+  font-weight: bold;
+  z-index: 1000;
+  animation: fadeInOut 2s ease-in-out;
+  text-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* 添加文字阴影以增加可读性 */
+}
+
+@keyframes fadeInOut {
+  0%, 100% { opacity: 0; }
+  50% { opacity: 1; }
+}
+
+/* ... 保持其他样式不变 */

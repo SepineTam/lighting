@@ -8,11 +8,13 @@
         "lint": "next lint"
     },
     "dependencies": {
+        "html2canvas": "^1.4.1",
         "next": "latest",
         "react": "latest",
         "react-dom": "latest"
     },
     "devDependencies": {
+        "@types/html2canvas": "^0.5.35",
         "@types/react": "18.3.8"
     }
 }
